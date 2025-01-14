@@ -51,3 +51,12 @@ CREATE TABLE raw_content(
     CONSTRAINT fk_live_source FOREIGN KEY (live_source_id) REFERENCES live_source(id) ON DELETE CASCADE,
     CONSTRAINT fk_content_type FOREIGN KEY (content_type_id) REFERENCES content_type(id) ON DELETE CASCADE
 );
+
+
+
+--- Post Nut clarity
+
+create table onboarded_videos(
+	id SERIAL PRIMARY KEY,
+	video_id VARCHAR(255)
+)
