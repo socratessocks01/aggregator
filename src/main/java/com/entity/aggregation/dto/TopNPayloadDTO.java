@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TopNPayloadDTO {
-    String videoId;
-    int limit;
+    private String videoId;
+    private int limit;
 }

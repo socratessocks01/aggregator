@@ -1,13 +1,30 @@
 package com.entity.aggregation.service.imp;
 
 import com.entity.aggregation.dto.TopNPayloadDTO;
+import com.entity.aggregation.entity.OnboardedVideo;
+import com.entity.aggregation.entity.WordFrequency;
+import com.entity.aggregation.repository.OnboardedVideoRepository;
+import com.entity.aggregation.repository.WordFrequencyRepository;
 import com.entity.aggregation.service.FetchService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Optional;
 
+@Service
 public class FetchServiceImpl implements FetchService {
 
+    @Value("${db.name}")
+    private String dbName;
+
+    @Autowired
+    OnboardedVideoRepository onboardedVideoRepository;
+    @Autowired
+    WordFrequencyRepository wordFrequencyRepository;
 
     @Override
     public String fetch(TopNPayloadDTO topNPayloadDTO) {
@@ -17,13 +34,24 @@ public class FetchServiceImpl implements FetchService {
         // check if video exists in repository
         if (ifVideoExists(topNPayloadDTO.getVideoId())) {
             // fetch and return from database
+            List<WordFrequency> wordFrequencies = wordFrequencyRepository.findAllByVideoId(topNPayloadDTO.getVideoId());
+            return wordFrequencies.toString();
 
         } else {
             // onboard using script
             onboardVideoTranscript(topNPayloadDTO.getVideoId());
+            List<WordFrequency> wordFrequencies = wordFrequencyRepository.findAllByVideoId(topNPayloadDTO.getVideoId());
+            return wordFrequencies.toString();
             // fetch and return from database
         }
-        return "";
+    }
+
+    private boolean ifVideoExists(String videoId) {
+        Optional<OnboardedVideo> optionalOnboardedVideo = onboardedVideoRepository.findByVideoId(videoId);
+        if (optionalOnboardedVideo.isPresent()) {
+            return true;
+        }
+        return false;
     }
 
     private void onboardVideoTranscript(String videoId) {
@@ -32,7 +60,7 @@ public class FetchServiceImpl implements FetchService {
 
         try {
             // Create the process to call the Python script
-            ProcessBuilder processBuilder = new ProcessBuilder(pythonPath, scriptPath);
+            ProcessBuilder processBuilder = new ProcessBuilder(pythonPath, scriptPath, videoId, dbName);
             Process process = processBuilder.start();
 
             // Read the output of the Python script
