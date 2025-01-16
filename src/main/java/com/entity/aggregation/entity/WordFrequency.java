@@ -1,11 +1,9 @@
 package com.entity.aggregation.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "word_frequencies")
 public class WordFrequency {
@@ -22,4 +20,5 @@ public class WordFrequency {
 
     @Column(nullable = false)
     private Integer count;
+    
 }

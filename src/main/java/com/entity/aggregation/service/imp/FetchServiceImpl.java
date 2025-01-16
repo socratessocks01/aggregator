@@ -1,6 +1,5 @@
 package com.entity.aggregation.service.imp;
 
-import com.entity.aggregation.dto.TopNPayloadDTO;
 import com.entity.aggregation.entity.OnboardedVideo;
 import com.entity.aggregation.entity.WordFrequency;
 import com.entity.aggregation.repository.OnboardedVideoRepository;
@@ -27,23 +26,16 @@ public class FetchServiceImpl implements FetchService {
     WordFrequencyRepository wordFrequencyRepository;
 
     @Override
-    public String fetch(TopNPayloadDTO topNPayloadDTO) {
-        if (!validate(topNPayloadDTO)) {
-            return "ERROR";
+    public List<WordFrequency> fetchAllByVideoId(String videoId) {
+        if (videoId == null || videoId.isEmpty()) {
+            return List.of();
         }
         // check if video exists in repository
-        if (ifVideoExists(topNPayloadDTO.getVideoId())) {
-            // fetch and return from database
-            List<WordFrequency> wordFrequencies = wordFrequencyRepository.findAllByVideoId(topNPayloadDTO.getVideoId());
-            return wordFrequencies.toString();
-
-        } else {
-            // onboard using script
-            onboardVideoTranscript(topNPayloadDTO.getVideoId());
-            List<WordFrequency> wordFrequencies = wordFrequencyRepository.findAllByVideoId(topNPayloadDTO.getVideoId());
-            return wordFrequencies.toString();
-            // fetch and return from database
+        if (!ifVideoExists(videoId)) {
+            onboardVideoTranscript(videoId);
         }
+        List<WordFrequency> wordFrequencies = wordFrequencyRepository.findAllByVideoId(videoId);
+        return wordFrequencies;
     }
 
     private boolean ifVideoExists(String videoId) {
@@ -80,10 +72,6 @@ public class FetchServiceImpl implements FetchService {
             e.printStackTrace();
 
         }
-    }
-
-    private boolean validate(TopNPayloadDTO topNPayloadDTO) {
-        return true;
     }
 
 }

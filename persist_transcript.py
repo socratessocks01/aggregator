@@ -74,11 +74,11 @@ def save_to_postgresql(video_id, word_frequencies, db_config):
             conn.close()
 
 
-def main(video_id):
+def main(video_id,db_name):
     """Main function to process the video transcript."""
     # Database configuration
     db_config = {
-        "dbname": "stagingdb",
+        "dbname": db_name,
         "user": "admin",
         "password": "admin",
         "host": "localhost",  # or your DB server address
@@ -96,10 +96,10 @@ def main(video_id):
         save_to_postgresql(video_id, word_frequencies, db_config)
 
 
-# main("6m3XjNtAgkA")
+# main("6m3XjNtAgkA","aggregation_service_database")
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 3:
         sys.exit(1)
-
     video_id = sys.argv[1]
-    main(video_id)
+    db_name = sys.argv[2]
+    main(video_id,db_name)
