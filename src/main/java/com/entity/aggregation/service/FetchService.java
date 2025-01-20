@@ -8,4 +8,6 @@ import java.util.List;
 public interface FetchService {
     List<WordFrequency> fetchAllByVideoId(String videoId);
 
+    List<WordFrequency> getTopNWordsByVideoId(TopNPayloadDTO topNPayloadDTO);
+
 }
