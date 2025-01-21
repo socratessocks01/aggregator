@@ -16,4 +16,8 @@ public interface WordFrequencyRepository extends JpaRepository<WordFrequency, Lo
     // New method to fetch top N words by frequency for a specific video
     @Query(value = "SELECT wf FROM WordFrequency wf WHERE wf.videoId = :videoId ORDER BY wf.count DESC limit :topN", nativeQuery = false)
     List<WordFrequency> findTopNWordsByFrequency(@Param("videoId") String videoId, @Param("topN") int topN);
+
+    // Method to fetch the frequency of a list of words for a specific video
+    @Query(value = "SELECT wf FROM WordFrequency wf WHERE wf.videoId = :videoId AND wf.word IN :words", nativeQuery = false)
+    List<WordFrequency> findFrequenciesByVideoIdAndWords(@Param("videoId") String videoId, @Param("words") List<String> words);
 }

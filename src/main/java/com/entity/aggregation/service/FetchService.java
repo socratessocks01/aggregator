@@ -1,5 +1,6 @@
 package com.entity.aggregation.service;
 
+import com.entity.aggregation.dto.FrequencyOfWordsPayloadDTO;
 import com.entity.aggregation.dto.TopNPayloadDTO;
 import com.entity.aggregation.entity.WordFrequency;
 
@@ -9,5 +10,7 @@ public interface FetchService {
     List<WordFrequency> fetchAllByVideoId(String videoId);
 
     List<WordFrequency> getTopNWordsByVideoId(TopNPayloadDTO topNPayloadDTO);
+
+    List<WordFrequency> getFrequenciesByVideoIdAndWords(FrequencyOfWordsPayloadDTO frequencyOfWordsPayloadDTO);
 
 }

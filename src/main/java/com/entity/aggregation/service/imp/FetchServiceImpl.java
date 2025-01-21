@@ -1,5 +1,6 @@
 package com.entity.aggregation.service.imp;
 
+import com.entity.aggregation.dto.FrequencyOfWordsPayloadDTO;
 import com.entity.aggregation.dto.TopNPayloadDTO;
 import com.entity.aggregation.entity.OnboardedVideo;
 import com.entity.aggregation.entity.WordFrequency;
@@ -50,7 +51,13 @@ public class FetchServiceImpl implements FetchService {
 
     @Override
     public List<WordFrequency> getTopNWordsByVideoId(TopNPayloadDTO topNPayloadDTO) {
+        // add validation
         return wordFrequencyRepository.findTopNWordsByFrequency(topNPayloadDTO.getVideoId(), topNPayloadDTO.getLimit());
+    }
+
+    @Override
+    public List<WordFrequency> getFrequenciesByVideoIdAndWords(FrequencyOfWordsPayloadDTO frequencyOfWordsPayloadDTO) {
+            return wordFrequencyRepository.findFrequenciesByVideoIdAndWords(frequencyOfWordsPayloadDTO.getVideoId(), frequencyOfWordsPayloadDTO.getWords());
     }
 
     private void onboardVideoTranscript(String videoId) {

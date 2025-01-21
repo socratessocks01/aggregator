@@ -31,7 +31,7 @@ def extract_meaningful_words(text):
     # Remove stopwords and punctuation
     stop_words = set(stopwords.words('english'))
     meaningful_words = [
-        word.lower() for word in words
+        word for word in words
         if word not in stop_words and word not in string.punctuation
     ]
     return meaningful_words
@@ -96,10 +96,11 @@ def main(video_id,db_name):
         save_to_postgresql(video_id, word_frequencies, db_config)
 
 
-# main("6m3XjNtAgkA","aggregation_service_database")
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        sys.exit(1)
-    video_id = sys.argv[1]
-    db_name = sys.argv[2]
-    main(video_id,db_name)
+main("6m3XjNtAgkA","aggregation_service_database")
+# if __name__ == "__main__":
+#     if len(sys.argv) != 2:
+#         sys.exit(1)
+
+#     video_id = sys.argv[1]
+#     db_name = sys.argv[2]
+#     main(video_id,db_name)
