@@ -19,20 +19,26 @@ public class FetchController {
 
     @GetMapping("/All/{videoId}")
     public ResponseEntity<List<WordFrequency>> fetchAll(@PathVariable String videoId) {
-        // FIXME : add payload validation
+        if (videoId.isEmpty() || videoId.isBlank()) {
+            return ResponseEntity.badRequest().build();
+        }
         List<WordFrequency> wordFrequencies = fetchService.fetchAllByVideoId(videoId);
         return ResponseEntity.ok(wordFrequencies);
     }
 
     @GetMapping("/top-N-words")
     public ResponseEntity<List<WordFrequency>> getTopWords(@RequestBody TopNPayloadDTO topNPayloadDTO) {
-        // FIXME : add payload validation
+        if (!topNPayloadDTO.isValid()) {
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(fetchService.getTopNWordsByVideoId(topNPayloadDTO));
     }
 
     @GetMapping("/words-list-frequency")
     public ResponseEntity<List<WordFrequency>> getFrequencyOfWords(@RequestBody FrequencyOfWordsPayloadDTO frequencyOfWordsPayloadDTO) {
-        // FIXME : add payload validation
+        if (!frequencyOfWordsPayloadDTO.isValid()) {
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(fetchService.getFrequenciesByVideoIdAndWords(frequencyOfWordsPayloadDTO));
     }
 }
